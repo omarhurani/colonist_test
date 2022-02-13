@@ -1,0 +1,14 @@
+#canvas{
+    outline: 1px solid #000;
+    background-color: #fefefe;
+    display: block;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
