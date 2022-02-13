@@ -3,27 +3,17 @@ app.onInit = function(){
     this.onResize()
     window.addEventListener('resize', () => this.onResize())
 
-    this.nodes.push(new Node(
-        'red-box',
-        { x : 100, y : 0 },
-        { width : 100, height : 100 },
-        'red',
+    this.nodes.push(new Ball(
+        'ball',
+        {x : this.width / 2, y : this.height / 2},     
         0.5,
-        0
-    ));
+    ))
+    
+    this.resetBall()
 
-    this.nodes.push(new Node(
-        'black-box',
-        { x : 50, y : 50 },
-        { width : 150, height : 150 },
-        'black',
-        0.25,
-        Math.PI / 2
-    ));
 };
 
 app.onUpdate = function(time){
-
     for(let node of this.nodes){
         node.update(time, {
             minX : 0,
@@ -33,12 +23,18 @@ app.onUpdate = function(time){
         });
     }
 
-    let red = this.getNode('red-box')
-    if(red.x + red.width >= this.width){
-        red.direction = Math.PI - red.direction
+    // Ball scoring
+    let ball = this.getNode('ball')
+    if(ball.x == null || ball.y == null)
+        return
+
+    let touching = {
+        left : ball.x <= 0,
+        right : ball.x + ball.width >= this.width
     }
-    if(red.x <= 0){
-        red.direction = Math.PI - red.direction
+
+    if(ball.speed != 0 && (touching.left || touching.right)){ 
+        this.resetBall()
     }
 };
 
@@ -65,4 +61,20 @@ app.onResize = function(){
         this.canvas.style.height = `${height}px`;
 
     }
+}
+
+app.resetBall = async function(){
+    let ball = this.getNode('ball')
+    let speed = ball.speed
+    ball.speed = 0
+
+    // Wait for 2 seconds
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    ball.speed = speed
+
+    ball.position = {
+        x : this.width / 2,
+        y : this.height / 2
+    }
+    ball.direction = ((Math.random() * Math.PI * 75 / 180) - (Math.PI * 75 / 360)) + (Math.random() < 0.5 ? 0 : Math.PI)
 }
