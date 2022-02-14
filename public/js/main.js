@@ -8,6 +8,17 @@ app.onInit = function(){
         {x : this.width / 2, y : this.height / 2},     
         0.5,
     ))
+
+    this.nodes.push(
+        new Paddle(
+            'left',
+            {x : 50, y : this.height / 2},
+        ),
+        new Paddle(
+            'right',
+            {x : this.width - 50, y : this.height / 2},
+        )        
+    )
     
     this.resetBall()
 
@@ -36,6 +47,15 @@ app.onUpdate = function(time){
     if(ball.speed != 0 && (touching.left || touching.right)){ 
         this.resetBall()
     }
+
+    let paddles = [this.getNode('left'), this.getNode('right')]
+    for(let paddle of paddles){
+        let newBallInfo = paddle.getBallInfoFromBounce(ball)
+        ball.speed = newBallInfo.speed ?? ball.speed
+        ball.direction = newBallInfo.direction ?? ball.direction
+        ball.position = newBallInfo.position ?? ball.position
+    }
+
 };
 
 app.onResize = function(){
