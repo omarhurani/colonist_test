@@ -19,6 +19,14 @@ app.onInit = function(){
             {x : this.width - 50, y : this.height / 2},
         )        
     )
+
+    this.players = {
+        left : new Player(this.getNode('left'), { up: Keys.W, down: Keys.S }),
+        right : new Player(this.getNode('right'), { up: Keys.UP, down: Keys.DOWN })
+    }
+
+    window.addEventListener('keydown', (event) => this.onKey(true, event));
+    window.addEventListener('keyup', (event) => this.onKey(false, event));
     
     this.resetBall()
 
@@ -42,9 +50,19 @@ app.onUpdate = function(time){
     let touching = {
         left : ball.x <= 0,
         right : ball.x + ball.width >= this.width
-    }
+    }    
+    
 
-    if(ball.speed != 0 && (touching.left || touching.right)){ 
+    if(ball.speed != 0 && (touching.left || touching.right)){
+        for(let side in touching){
+            if(touching[side]){
+                let player = this.players[side]
+                if(player.score == null)
+                    player.score = 0
+                player.score++
+            }
+        }
+        console.log(Object.entries(this.players).forEach(([side, player]) => console.log(`${side}: ${player.score}`)));
         this.resetBall()
     }
 
@@ -59,28 +77,27 @@ app.onUpdate = function(time){
 };
 
 app.onResize = function(){
-    {
-        let aspectRatio = 2;
-        let width, height
-        if(window.innerWidth / window.innerHeight > aspectRatio){
-            width = window.innerHeight * aspectRatio;
-            height = window.innerHeight;
-        } else{
-            width = window.innerWidth;
-            height = window.innerWidth / aspectRatio;
-        }
-        
-        this.context.mozImageSmoothingEnabled = false;
-        this.context.webkitImageSmoothingEnabled = false;
-        this.context.msImageSmoothingEnabled = false;
-        this.context.imageSmoothingEnabled = false;
-
-        // By changing the canvas.style size, the contents of the canvas are scaled to the new size
-        // This will make it such that absolute sizes become relative to the canvas.style size
-        this.canvas.style.width = `${width}px`;
-        this.canvas.style.height = `${height}px`;
-
+    
+    let aspectRatio = 2;
+    let width, height
+    if(window.innerWidth / window.innerHeight > aspectRatio){
+        width = window.innerHeight * aspectRatio;
+        height = window.innerHeight;
+    } else{
+        width = window.innerWidth;
+        height = window.innerWidth / aspectRatio;
     }
+    
+    this.context.mozImageSmoothingEnabled = false;
+    this.context.webkitImageSmoothingEnabled = false;
+    this.context.msImageSmoothingEnabled = false;
+    this.context.imageSmoothingEnabled = false;
+
+    // By changing the canvas.style size, the contents of the canvas are scaled to the new size
+    // This will make it such that absolute sizes become relative to the canvas.style size
+    this.canvas.style.width = `${width}px`;
+    this.canvas.style.height = `${height}px`;
+    
 }
 
 app.resetBall = async function(){
@@ -97,4 +114,13 @@ app.resetBall = async function(){
         y : this.height / 2
     }
     ball.direction = ((Math.random() * maxAngle) - (maxAngle / 2)) + (Math.random() < 0.5 ? 0 : Math.PI)
+}
+
+app.onKey = function(pressed, event){
+    if(this.players == null)
+        return
+
+    Object.values(this.players).forEach(player => {
+        player.keys = { [event.code]: pressed }
+    })
 }
