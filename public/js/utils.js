@@ -1,0 +1,1 @@
+const maxAngle = Math.PI * 75 / 180

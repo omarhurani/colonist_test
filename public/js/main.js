@@ -76,5 +76,5 @@ app.resetBall = async function(){
         x : this.width / 2,
         y : this.height / 2
     }
-    ball.direction = ((Math.random() * Math.PI * 75 / 180) - (Math.PI * 75 / 360)) + (Math.random() < 0.5 ? 0 : Math.PI)
+    ball.direction = ((Math.random() * maxAngle) - (maxAngle / 2)) + (Math.random() < 0.5 ? 0 : Math.PI)
 }
