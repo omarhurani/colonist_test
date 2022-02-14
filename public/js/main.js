@@ -33,6 +33,9 @@ app.onInit = function(){
 };
 
 app.onUpdate = function(time){
+    if(this.paused)
+        return
+
     for(let node of this.nodes){
         node.update(time, {
             minX : 0,
@@ -117,10 +120,18 @@ app.resetBall = async function(){
 }
 
 app.onKey = function(pressed, event){
-    if(this.players == null)
+
+    if(event.code == Keys.SPACE && pressed && !event.repeat){
+        this.paused = !this.paused
         return
+    }
+
+    if(this.players == null)
+        return    
 
     Object.values(this.players).forEach(player => {
         player.keys = { [event.code]: pressed }
     })
 }
+
+app.paused = true

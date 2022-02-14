@@ -6,4 +6,6 @@ class Keys{
 
     static UP = 'ArrowUp'
     static DOWN = 'ArrowDown'
+
+    static SPACE = 'Space'
 }
