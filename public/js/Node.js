@@ -29,10 +29,9 @@ class Node{
     }
 
     collidesWith(other){
-        return (this.position.x < other.position.x + other.width &&
-            this.position.x + this.width > other.position.x &&
-            this.position.y < other.position.y + other.height &&
-            this.height + this.position.y > other.position.y)
+        let [x, y] = [this.x, this.y]
+        let [ox, oy] = [other.x, other.y]
+        return x < ox + other.width && x + this.width > ox && y < oy + other.height && y + this.height > oy
     }
 
     get x(){
@@ -57,6 +56,19 @@ class Node{
 
     get height(){
         return this.size.height
+    }
+
+    get direction(){
+        return this._direction
+    }
+
+    set direction(direction){
+        while(direction > Math.PI * 2)
+            direction -= Math.PI * 2
+        while(direction < 0)
+            direction += Math.PI * 2
+
+        this._direction = direction
     }
 }
 
