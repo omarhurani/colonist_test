@@ -55,15 +55,15 @@ app.onUpdate = function(time){
     if(ball.x == null || ball.y == null)
         return
 
-    let touching = {
-        left : ball.x <= 0,
-        right : ball.x + ball.width >= this.width
+    let scoredAt = {
+        right : ball.x <= 0,
+        left : ball.x + ball.width >= this.width
     }    
     
 
-    if(ball.speed != 0 && (touching.left || touching.right)){
-        for(let side in touching){
-            if(touching[side]){
+    if(ball.speed != 0 && (scoredAt.left || scoredAt.right)){
+        for(let side in scoredAt){
+            if(scoredAt[side]){
                 let player = this.players[side]
                 if(player.score == null)
                     player.score = 0
