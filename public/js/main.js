@@ -14,6 +14,8 @@ app.onInit = function(){
             'ball',
             {x : this.width / 2, y : this.height / 2},     
             0.5,
+            0,
+            this.audio.bounce,
         ),
         new Paddle(
             'left', 
@@ -79,6 +81,7 @@ app.onUpdate = function(time){
                     player.score = 0
                 player.score++
                 this.getNode(`${side}_score`).text = player.score
+                this.audio.death.play()
             }
         }
         this.reset()
@@ -87,9 +90,12 @@ app.onUpdate = function(time){
     let paddles = [this.getNode('left'), this.getNode('right')]
     for(let paddle of paddles){
         let newBallInfo = paddle.getBallInfoFromBounce(ball)
+        if(newBallInfo == null)
+            continue
         ball.speed = newBallInfo.speed ?? ball.speed
         ball.direction = newBallInfo.direction ?? ball.direction
         ball.position = newBallInfo.position ?? ball.position
+        this.audio.bounce.play()
     }
 
 };
@@ -169,3 +175,7 @@ app.onKey = function(pressed, event){
 
 app.paused = true
 app.scale = 1
+app.audio = {
+    bounce: new MyAudio('audio/bounce.aac'),
+    death: new MyAudio('audio/death.aac'),
+}

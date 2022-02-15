@@ -1,12 +1,14 @@
 class Ball extends CircularNode{
-    constructor(id, {x, y}, speed = 0.5, direction = 0,){
+    constructor(id, {x, y}, speed = 0.5, direction = 0, bounceAudio = null){
         super(id, {x, y}, 10, 'red', speed, direction);
+        this.bounceAudio = bounceAudio;
     }
 
     _bounce({minY = 0, maxY = Number.MAX_VALUE}){
         // If this.y is at the minY or maxY, reverse the Y direction
         if(this.y <= minY || (this.y + this.height) >= maxY ){
             this.direction = -this.direction;
+            this.bounceAudio?.play();
         }
         
     }

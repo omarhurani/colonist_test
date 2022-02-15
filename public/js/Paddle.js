@@ -6,7 +6,7 @@ class Paddle extends RectangularNode{
     getBallInfoFromBounce(ball){
 
         if(!this.collidesWith(ball))
-            return {}
+            return null
 
         const offset = Math.abs(ball.position.y - this.position.y)
 
