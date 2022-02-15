@@ -25,6 +25,19 @@ class Node{
         this.position = { x , y }
     }
 
+    get direction(){
+        return this._direction
+    }
+
+    set direction(direction){
+        while(direction > Math.PI * 2)
+            direction -= Math.PI * 2
+        while(direction < 0)
+            direction += Math.PI * 2
+
+        this._direction = direction
+    }
+
     draw(context, scale = 1){}
 
     collidesWith(other){
