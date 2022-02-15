@@ -27,6 +27,11 @@ app.onInit = function(){
 
     window.addEventListener('keydown', (event) => this.onKey(true, event));
     window.addEventListener('keyup', (event) => this.onKey(false, event));
+
+    this.nodes.push(
+        new RectangularNode('pauseScreen', {x : this.width / 2, y : this.height / 2}, {width : this.width, height : this.height}, 'rgba(0,0,0,0.5)', 0, 0,),        
+        new TextNode('pauseText', {x : this.width / 2, y : this.height / 2}, 'PAUSED', '72px Arial', 'white')
+    )
     
     this.reset()
 
@@ -123,14 +128,18 @@ app.reset = async function(){
 
 app.togglePause = function(){
     this.paused = !this.paused
+    this.getNode('pauseScreen').visible = this.paused
+    this.getNode('pauseText').visible = this.paused
 }
 
 app.start = function(){
-    this.paused = false
+    if(this.paused)
+        this.togglePause()
 }
 
 app.pause = function(){
-    this.paused = true
+    if(!this.paused)
+        this.togglePause()
 }
 
 app.onKey = function(pressed, event){
