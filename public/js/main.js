@@ -45,7 +45,7 @@ app.onInit = function(){
         new TextNode('right_score', {x : this.width / 2 + 30, y : 54}, '0', '54px Arial', 'black', 'left')
     )
     
-    this.reset()
+    this.resetBall()
 
 };
 
@@ -84,7 +84,7 @@ app.onUpdate = function(time){
                 this.audio.death.play()
             }
         }
-        this.reset()
+        this.resetBall()
     }
 
     let paddles = [this.getNode('left'), this.getNode('right')]
@@ -126,7 +126,7 @@ app.onResize = function(){
     
 }
 
-app.reset = async function(){
+app.resetBall = async function(){
     let ball = this.getNode('ball')
     let speed = ball.speed
     ball.speed = 0
@@ -156,6 +156,24 @@ app.start = function(){
 app.pause = function(){
     if(!this.paused)
         this.togglePause()
+}
+
+app.reset = function() {
+    this.pause()
+    this.getNode('ball').position = {
+        x : this.width / 2,
+        y : this.height / 2
+    }
+
+    for(let player in this.players){
+        this.players[player].score = 0
+        this.getNode(`${player}_score`).text = 0
+        const paddle = this.getNode(player)
+        paddle.position = {
+            x : paddle.position.x,
+            y : this.height / 2,
+        }
+    }
 }
 
 app.onKey = function(pressed, event){
