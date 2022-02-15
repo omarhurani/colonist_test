@@ -28,7 +28,7 @@ app.onInit = function(){
     window.addEventListener('keydown', (event) => this.onKey(true, event));
     window.addEventListener('keyup', (event) => this.onKey(false, event));
     
-    this.resetBall()
+    this.reset()
 
 };
 
@@ -66,7 +66,7 @@ app.onUpdate = function(time){
             }
         }
         console.log(Object.entries(this.players).forEach(([side, player]) => console.log(`${side}: ${player.score}`)));
-        this.resetBall()
+        this.reset()
     }
 
     let paddles = [this.getNode('left'), this.getNode('right')]
@@ -103,7 +103,7 @@ app.onResize = function(){
     
 }
 
-app.resetBall = async function(){
+app.reset = async function(){
     let ball = this.getNode('ball')
     let speed = ball.speed
     ball.speed = 0
@@ -119,10 +119,22 @@ app.resetBall = async function(){
     ball.direction = ((Math.random() * maxAngle) - (maxAngle / 2)) + (Math.random() < 0.5 ? 0 : Math.PI)
 }
 
+app.togglePause = function(){
+    this.paused = !this.paused
+}
+
+app.start = function(){
+    this.paused = false
+}
+
+app.pause = function(){
+    this.paused = true
+}
+
 app.onKey = function(pressed, event){
 
     if(event.code == Keys.SPACE && pressed && !event.repeat){
-        this.paused = !this.paused
+        this.togglePause()
         return
     }
 
