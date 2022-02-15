@@ -23,7 +23,7 @@ class Node{
             y = maxY
 
         this.position = { x , y }
-    }
+    }    
 
     get direction(){
         return this._direction
@@ -118,20 +118,27 @@ class RectangularNode extends SizedNode{
     }
 }
 
+
+
 class TextNode extends Node{
-    constructor(id, {x, y}, text, font, color, speed = 0, direction = 0){
+    constructor(id, {x, y}, text, font, color, align = 'center', speed = 0, direction = 0){
         super(id, {x, y}, speed, direction)
 
         this.text = text
         this.font = font
         this.color = color
+        this.align = align
     }
 
     draw(context, scale = 1){
         context.save()
-        context.font = this.font
+        let fontSize = parseInt(this.font.match(/\d+px/)[0].substring(0, this.font.length - 2))
+        let scaledFontSize = Math.floor(fontSize * scale)
+
+        context.font = this.font.replace(/\d+px/, `${scaledFontSize}px`)
         context.fillStyle = this.color
-        context.textAlign = "center"
+        context.textAlign = this.align
+        context.textBaseLine = "middle"
         context.fillText(this.text, this.position.x*scale, this.position.y*scale)
         context.restore()
     }
@@ -169,7 +176,7 @@ class CircularNode extends SizedNode{
     }
 
     get radius(){
-        return this.width/2
+        return this.width / 2
     }
 
     set radius(radius){
