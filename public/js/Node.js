@@ -45,11 +45,10 @@ class Node{
     }
 }
 
-class RectangularNode extends Node{
-    constructor(id, {x, y}, {width, height}, color, speed, direction){
+class SizedNode extends Node{
+    constructor(id, {x, y}, {width, height}, speed, direction){
         super(id, {x, y}, speed, direction)
         this.size = {width, height}
-        this.color = color
     }
 
     update(time, {minX = 0, minY = 0, maxX = Number.MAX_VALUE, maxY = Number.MAX_VALUE}){
@@ -67,8 +66,8 @@ class RectangularNode extends Node{
     }
 
     collidesWith(other){
-        if(!(other instanceof RectangularNode))
-            return super.collidesWith(other)
+        if(!(other instanceof SizedNode))
+            return other.collidesWith(this)
         let [x, y] = [this.x, this.y]
         let [ox, oy] = [other.x, other.y]
         return x < ox + other.width && x + this.width > ox && y < oy + other.height && y + this.height > oy
@@ -97,18 +96,18 @@ class RectangularNode extends Node{
     get height(){
         return this.size.height
     }
+}
 
-    get direction(){
-        return this._direction
+class RectangularNode extends SizedNode{
+    constructor(id, {x, y}, {width, height}, color, speed, direction){
+        super(id, {x, y}, {width, height}, speed, direction)
+        this.color = color
     }
 
-    set direction(direction){
-        while(direction > Math.PI * 2)
-            direction -= Math.PI * 2
-        while(direction < 0)
-            direction += Math.PI * 2
-
-        this._direction = direction
+    collidesWith(other){
+        if(other instanceof CircularNode)
+            return other.collidesWith(this)
+        return super.collidesWith(other)
     }
 
     draw(context, scale = 1){
@@ -134,6 +133,56 @@ class TextNode extends Node{
         context.fillStyle = this.color
         context.textAlign = "center"
         context.fillText(this.text, this.position.x*scale, this.position.y*scale)
+        context.restore()
+    }
+}
+
+class CircularNode extends SizedNode{
+    constructor(id, {x, y}, radius, color, speed, direction){
+        super(id, {x, y}, {width: radius*2, height: radius*2}, speed, direction)
+        this.color = color
+    }
+
+    collidesWith(other){
+        if(other instanceof CircularNode){
+            let [x, y] = [this.x, this.y]
+            let [ox, oy] = [other.x, other.y]
+            let [dx, dy] = [ox - x, oy - y]
+            let distance = Math.sqrt(dx * dx + dy * dy)
+            return distance < this.radius + other.radius
+        }
+        if(other instanceof SizedNode){
+            let dx = Math.abs(this.position.x - other.position.x);
+            let dy = Math.abs(this.position.y - other.position.y);
+
+            if (dx > (other.width/2 + this.radius) || dy > (other.height/2 + this.radius))
+                return false;
+
+            if (dx <= (other.width/2) || dy <= (other.height/2))
+                return true;
+
+            dx = dx - other.width/2;
+            dy = dy - other.height/2;
+            return ((dx * dx + dy * dy) <= (this.radius * this.radius));
+        }
+
+    }
+
+    get radius(){
+        return this.width/2
+    }
+
+    set radius(radius){
+        this.width = radius * 2
+        this.height = radius * 2
+    }
+
+    draw(context, scale = 1){
+        context.save()
+        context.fillStyle = this.color
+        context.beginPath()
+        context.arc(this.position.x*scale, this.position.y*scale, this.radius*scale, 0, Math.PI*2)
+        context.fill()
         context.restore()
     }
 }

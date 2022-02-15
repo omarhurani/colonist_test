@@ -1,6 +1,6 @@
-class Ball extends RectangularNode{
+class Ball extends CircularNode{
     constructor(id, {x, y}, speed = 0.5, direction = 0,){
-        super(id, {x, y}, {width: 10, height: 10}, 'red', speed, direction);
+        super(id, {x, y}, 10, 'red', speed, direction);
     }
 
     _bounce({minY = 0, maxY = Number.MAX_VALUE}){
