@@ -26,6 +26,10 @@ class Node{
     }
 
     draw(context, scale = 1){}
+
+    collidesWith(other){
+        return this.position.x == other.position.x && this.position.y == other.position.y
+    }
 }
 
 class RectangularNode extends Node{
@@ -50,6 +54,8 @@ class RectangularNode extends Node{
     }
 
     collidesWith(other){
+        if(!(other instanceof RectangularNode))
+            return super.collidesWith(other)
         let [x, y] = [this.x, this.y]
         let [ox, oy] = [other.x, other.y]
         return x < ox + other.width && x + this.width > ox && y < oy + other.height && y + this.height > oy
