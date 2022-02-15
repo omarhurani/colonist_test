@@ -1,4 +1,4 @@
-const maxAngle = Math.PI * 75 / 180
+const maxAngle = Math.PI * 65 / 180
 
 class Keys{
     static W = 'KeyW'
