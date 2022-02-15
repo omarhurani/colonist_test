@@ -3,21 +3,26 @@ app.onInit = function(){
     this.onResize()
     window.addEventListener('resize', () => this.onResize())
 
-    this.nodes.push(new Ball(
-        'ball',
-        {x : this.width / 2, y : this.height / 2},     
-        0.5,
-    ))
-
-    this.nodes.push(
+    this.nodes.push(        
+        new RectangularNode(
+            'seperator',
+            {x : this.width / 2, y : this.height / 2},
+            {width : 2, height : this.height},
+            'rgba(0,0,0,0.25)', 0, 0
+        ),
+        new Ball(
+            'ball',
+            {x : this.width / 2, y : this.height / 2},     
+            0.5,
+        ),
         new Paddle(
-            'left',
+            'left', 
             {x : 50, y : this.height / 2},
         ),
         new Paddle(
             'right',
             {x : this.width - 50, y : this.height / 2},
-        )        
+        ),
     )
 
     this.players = {
@@ -31,6 +36,11 @@ app.onInit = function(){
     this.nodes.push(
         new RectangularNode('pauseScreen', {x : this.width / 2, y : this.height / 2}, {width : this.width, height : this.height}, 'rgba(0,0,0,0.5)', 0, 0,),        
         new TextNode('pauseText', {x : this.width / 2, y : this.height / 2}, 'PAUSED', '72px Arial', 'white')
+    )
+
+    this.nodes.push(
+        new TextNode('left_score', {x : this.width / 2 - 30, y : 54}, '0', '54px Arial', 'black', 'right'),
+        new TextNode('right_score', {x : this.width / 2 + 30, y : 54}, '0', '54px Arial', 'black', 'left')
     )
     
     this.reset()
@@ -68,9 +78,9 @@ app.onUpdate = function(time){
                 if(player.score == null)
                     player.score = 0
                 player.score++
+                this.getNode(`${side}_score`).text = player.score
             }
         }
-        console.log(Object.entries(this.players).forEach(([side, player]) => console.log(`${side}: ${player.score}`)));
         this.reset()
     }
 
