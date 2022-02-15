@@ -100,3 +100,21 @@ class RectangularNode extends Node{
     }
 }
 
+class TextNode extends Node{
+    constructor(id, {x, y}, text, font, color, speed = 0, direction = 0){
+        super(id, {x, y}, speed, direction)
+
+        this.text = text
+        this.font = font
+        this.color = color
+    }
+
+    draw(context, scale = 1){
+        context.save()
+        context.font = this.font
+        context.fillStyle = this.color
+        context.textAlign = "center"
+        context.fillText(this.text, this.position.x*scale, this.position.y*scale)
+        context.restore()
+    }
+}
