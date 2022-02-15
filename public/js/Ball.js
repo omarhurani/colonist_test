@@ -1,4 +1,4 @@
-class Ball extends Node{
+class Ball extends RectangularNode{
     constructor(id, {x, y}, speed = 0.5, direction = 0,){
         super(id, {x, y}, {width: 10, height: 10}, 'red', speed, direction);
     }

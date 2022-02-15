@@ -1,31 +1,52 @@
 class Node{
-    constructor(id, {x, y}, {width, height}, color, speed, direction){
+    constructor(id, {x, y}, speed, direction, visible = true){
         this.id = id
         this.position = {x, y}
-        this.size = {width, height}
-        this.color = color
         this.speed = speed
         this.direction = direction
+        this.visible = visible
     }
 
     update(time, {minX = 0, minY = 0, maxX = Number.MAX_VALUE, maxY = Number.MAX_VALUE}){
         let [speed, direction] = [this.speed, this.direction]
         let [sx, sy] = [speed * Math.cos(direction), speed * Math.sin(direction)]
         let [dx, dy] = [sx * time, sy * time]
-        let [x, y] = [this.x + dx, this.y + dy]
+        let [x, y] = [this.position.x + dx, this.position.y + dy]
         if(x <= minX)
-            this.x = minX
-        else if(x + this.width >= maxX)
-            this.x = maxX - this.width
-        else
-            this.x = x
-
+            x = minX
+        else if(x >= maxX)
+            x = maxX
+        
         if(y <= minY)
+            y = minY
+        else if(y >= maxY)
+            y = maxY
+
+        this.position = { x , y }
+    }
+
+    draw(context, scale = 1){}
+}
+
+class RectangularNode extends Node{
+    constructor(id, {x, y}, {width, height}, color, speed, direction){
+        super(id, {x, y}, speed, direction)
+        this.size = {width, height}
+        this.color = color
+    }
+
+    update(time, {minX = 0, minY = 0, maxX = Number.MAX_VALUE, maxY = Number.MAX_VALUE}){
+        super.update(time, {minX, minY, maxX, maxY})
+
+        if(this.x <= minX)
+            this.x = minX
+        else if(this.x + this.width >= maxX)
+            this.x = maxX - this.width
+
+        if(this.y <= minY)
             this.y = minY
-        else if(y + this.height >= maxY)
+        else if(this.y + this.height >= maxY)
             this.y = maxY - this.height     
-        else
-            this.y = y
     }
 
     collidesWith(other){
@@ -69,6 +90,13 @@ class Node{
             direction += Math.PI * 2
 
         this._direction = direction
+    }
+
+    draw(context, scale = 1){
+        context.save()
+        context.fillStyle = this.color
+        context.fillRect(this.x*scale, this.y*scale, this.width*scale, this.height*scale)
+        context.restore()
     }
 }
 

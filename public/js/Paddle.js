@@ -1,4 +1,4 @@
-class Paddle extends Node{
+class Paddle extends RectangularNode{
     constructor(id, {x, y},){
         super(id, {x, y}, { width: 10, height: 100}, 'black', 0, 0);
     }
