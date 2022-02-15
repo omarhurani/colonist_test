@@ -1,51 +1,39 @@
-# Colonist Test Game
-Implement a ping pong game according to the template. 
+# Colonist Test Game - Ping Pong
 
-- You're not expected to know everything in here, but you're expected to figure them out. 
+This is my take on the ping pong game requested by the awesome people at [Colonist.io](https://colonist.io/) as a test. If you like [Catan](https://www.catan.com/), or board games in general, give them a visit, I'm sure you'll love it 😁
 
-## Before Starting
-- Fork repository
-- All work should be done in your own repository now.
-- Create a new branch and work on that branch.
-- Do not push commit or push anything to this repo (colonist/test)!
-- [Read & apply the best practices](https://medium.com/@hugooodias/the-anatomy-of-a-perfect-pull-request-567382bb6067).
 
-## Template
-Template has `onInit` and `onUpdate`. Please design your ping-pong game with only those two functions. Do not modify app.js.
 
-Put your initializing functions in `onInit`, like key down and up bindings or players and ball.
+## Demo
+https://user-images.githubusercontent.com/26940488/154147153-5ad290fd-379d-41b6-81e1-ed9d5a75879c.mp4
 
-You can use ```this.nodes.push(nodeProperties)``` to add nodes to canvas.
-You can also use ```this.getNode()``` to get node properties.
+## Gameplay
+This is a two-player game. Or one-player if you want to play with both paddles, could also work with 4 players... It is for sure a two-paddle game.
 
-You can find examples in index.html file in public folder.
+The goal is to prevent the ball from sneaking behind your paddle and hitting the wall by deflecting it using the paddle. The ball's trajectory depends on where on the paddle does it hit, the more to the side, the more extreme the trajectory of the ball will be when it bounces.
 
-Please start server with ```node index.js```.
+Oh, also make sure your audio isn't too loud 😉
 
-## Todo
-- Make the game cover the whole browser
-- Add keyboard functionalities for both players, W and S for one player, Up and Down for another player.
-- Add players into canvas, make sure we can move players with keyboard.
-- Add ball to the game, pressing ```SPACE``` button should start and pause game, make sure ball bounces from boundries.
-- When player scores, show scoring with console.log. And reset game.
+## Controls
+| Action | Control |
+| - | - |
+| Move left paddle | `W` / `S` |
+| Move right paddle | `↑` / `↓` |
+| Pause/resume | `SPACE` |
 
-## Bonus Todo
-- Add draw text functionality to the engine. You can modify app.js for that part.
-- Add score system for the game and use this drawText functionality on game.
-- Add resize function the engine. With window.resize
-- Make the ball round
+## Techincal Shenanigans
 
-## After Finishing
-- On your repository create a PR merging your feature branch into your master branch.
-- On you PR add a [very good description](https://www.pullrequest.com/blog/writing-a-great-pull-request-description/) on what it is, make sure to include a very short video showcasing what you've made. 
-- Make sure your repository is public
-- Invite collaborators `demiculus`, `goktugyil` & `mayla-g` to the repo.
-- Request reviews for the PR from `demiculus`, `goktugyil` & `mayla-g`.
+This app was purely made using HTML5, CSS and Javascript, no external libraries (except for the Node server and Express which were part of the template).
 
-## Notes
-- Make sure game has state functions like reset, start and pause. We should be able to trigger them with ```app.reset()``` or ```app.pause()```.
-- Make sure players or ball uses app.width and app.height values dynamicly, hard coded values will be rejected.
+I am used to working with [Flutter](https://flutter.dev/) and haven't worked on a web project in a while, so please pardon anything that makes you facepalm 🤦‍♂️
 
-## Guidelines
-- Break down your commits into the smallest commit that represents a cohesive feature that is in a build-able state.
-- This is a good place to show off your architeture, clean code, modularity, extensibility knowledge.
+I seperated the functionalities across multiple files and used classes with polymorphism to better structure the code.
+
+Here are some functions you might want to play around with while testing the game:
+| Function | Functionality | Notes |
+| - | - | - |
+| `app.start()` | Resumes the game if paused | The game starts as paused, so I thought the simplest implementation of this would be to resume it.
+| `app.pause()` | Pauses the game if not paused | If the ball is scored while the pause happens, it will reset (but not start moving) |
+| `app.togglePause()` | Resume the game if paused, pauses otherwise | |
+| `app.resetBall()` | Freezes the ball for 1.5 seconds, then resets it to the middle of the game with a random trajectory | |
+| `app.reset()` | Resets the ball, paddles and scores, and pauses the game | |
