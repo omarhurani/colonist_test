@@ -150,16 +150,6 @@ class TextNode extends Node{
         context.fillText(this.text, this.position.x*scale, this.position.y*scale)
         context.restore()
     }
-
-
-    static replaceFontSizeInFont(font, newFontSize){
-        const oldFontSize = font.match(/\d+px/)
-
-        const newFontSizeAsString = `${newFontSize}px`
-        const newFont = font.replace(oldFontSize, newFontSizeAsString)
-
-        return newFont
-    }
 }
 
 class CircularNode extends SizedNode{

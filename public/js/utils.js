@@ -28,3 +28,12 @@ function extractFontSizeFromFont(font){
 
     return fontSizeAsNumber
 }
+
+function replaceFontSizeInFont(font, newFontSize){
+    const oldFontSize = font.match(/\d+px/)
+
+    const newFontSizeAsString = `${newFontSize}px`
+    const newFont = font.replace(oldFontSize, newFontSizeAsString)
+
+    return newFont
+}
