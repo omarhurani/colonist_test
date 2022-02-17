@@ -8,21 +8,15 @@ class Node{
     }
 
     update(time, {minX = 0, minY = 0, maxX = Number.MAX_VALUE, maxY = Number.MAX_VALUE}){
-        let [speed, direction] = [this.speed, this.direction]
-        let [sx, sy] = [speed * Math.cos(direction), speed * Math.sin(direction)]
-        let [dx, dy] = [sx * time, sy * time]
-        let [x, y] = [this.position.x + dx, this.position.y + dy]
-        if(x <= minX)
-            x = minX
-        else if(x >= maxX)
-            x = maxX
+        const [speed, direction] = [this.speed, this.direction]
+        const [speedX, speedY] = [speed * Math.cos(direction), speed * Math.sin(direction)]
+        const [distanceX, distanceY] = [speedX * time, speedY * time]
+        let [newX, newY] = [this.position.x + distanceX, this.position.y + distanceY]
         
-        if(y <= minY)
-            y = minY
-        else if(y >= maxY)
-            y = maxY
+        newX = clamp(newX, minX, maxX)
+        newY = clamp(newY, minY, maxY)
 
-        this.position = { x , y }
+        this.position = { x: newX , y: newY }
     }    
 
     get direction(){
