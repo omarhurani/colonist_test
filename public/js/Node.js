@@ -150,6 +150,14 @@ class TextNode extends Node{
         context.fillText(this.text, this.position.x*scale, this.position.y*scale)
         context.restore()
     }
+
+    static extractFontSizeFromFont(font){
+        const fontSize = font.match(/\d+px/)
+        const fontSizeWithoutPx = fontSize[0].substring(0, fontSize[0].length - 2)
+        const fontSizeAsNumber = parseInt(fontSizeWithoutPx)
+
+        return fontSizeAsNumber
+    }
 }
 
 class CircularNode extends SizedNode{
