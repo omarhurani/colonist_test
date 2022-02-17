@@ -42,7 +42,9 @@ class Node{
     draw(context, scale = 1){}
 
     collidesWith(other){
-        return this.position.x == other.position.x && this.position.y == other.position.y
+        const [sameX, sameY] = [this.position.x === other.position.x, this.position.y === other.position.y]
+        const areColliding = sameX && sameY
+        return areColliding
     }
 }
 
