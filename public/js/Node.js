@@ -111,8 +111,10 @@ class RectangularNode extends SizedNode{
     }
 
     collidesWith(other){
-        if(other instanceof CircularNode)
+        const otherIsCircularNode = other instanceof CircularNode
+        if(otherIsCircularNode)
             return other.collidesWith(this)
+            
         return super.collidesWith(other)
     }
 
