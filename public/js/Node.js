@@ -12,7 +12,7 @@ class Node{
         const [speedX, speedY] = [speed * Math.cos(direction), speed * Math.sin(direction)]
         const [distanceX, distanceY] = [speedX * time, speedY * time]
         let [newX, newY] = [this.position.x + distanceX, this.position.y + distanceY]
-        
+
         newX = clamp(newX, minX, maxX)
         newY = clamp(newY, minY, maxY)
 
@@ -24,10 +24,13 @@ class Node{
     }
 
     set direction(direction){
-        while(direction > Math.PI * 2)
-            direction -= Math.PI * 2
-        while(direction < 0)
-            direction += Math.PI * 2
+        const directionLargerThan360 = direction > Math.PI * 2
+        while(directionLargerThan360)
+            direction -= Math.PI * 2 // subtract 360 degress
+
+        const directionLessThan0 = direction < 0
+        while(directionLessThan0)
+            direction += Math.PI * 2 // Add 360 degrees
 
         this._direction = direction
     }
