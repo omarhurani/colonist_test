@@ -114,7 +114,7 @@ class RectangularNode extends SizedNode{
         const otherIsCircularNode = other instanceof CircularNode
         if(otherIsCircularNode)
             return other.collidesWith(this)
-            
+
         return super.collidesWith(other)
     }
 
@@ -140,14 +140,18 @@ class TextNode extends Node{
 
     draw(context, scale = 1){
         context.save()
-        let fontSize = parseInt(this.font.match(/\d+px/)[0].substring(0, this.font.length - 2))
-        let scaledFontSize = Math.floor(fontSize * scale)
 
-        context.font = this.font.replace(/\d+px/, `${scaledFontSize}px`)
+        const fontSize = extractFontSizeFromFont(this.font)
+        const scaledFontSize = Math.floor(fontSize * scale)
+        const newFont = replaceFontSizeInFont(this.font, scaledFontSize)
+
+        const [scaledX, scaledY] = [this.position.x * scale, this.position.y * scale]
+
+        context.font = newFont
         context.fillStyle = this.color
         context.textAlign = this.align
         context.textBaseLine = "middle"
-        context.fillText(this.text, this.position.x*scale, this.position.y*scale)
+        context.fillText(this.text, scaledX, scaledY)
         context.restore()
     }
 }
