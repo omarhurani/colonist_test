@@ -158,6 +158,15 @@ class TextNode extends Node{
 
         return fontSizeAsNumber
     }
+
+    static replaceFontSizeInFont(font, newFontSize){
+        const oldFontSize = font.match(/\d+px/)
+
+        const newFontSizeAsString = `${newFontSize}px`
+        const newFont = font.replace(oldFontSize, newFontSizeAsString)
+
+        return newFont
+    }
 }
 
 class CircularNode extends SizedNode{
