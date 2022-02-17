@@ -65,11 +65,18 @@ class SizedNode extends Node{
     }
 
     collidesWith(other){
-        if(!(other instanceof SizedNode))
-            return other.collidesWith(this)
-        let [x, y] = [this.x, this.y]
-        let [ox, oy] = [other.x, other.y]
-        return x < ox + other.width && x + this.width > ox && y < oy + other.height && y + this.height > oy
+        const otherIsNotSizedNode = !(other instanceof SizedNode)
+        if(otherIsNotSizedNode)
+            return other.collidesWith(this)            
+        
+        const [x, y, otherX, otherY] = [this.x, this.y, other.x, other.y]
+        const [width, height, otherWidth, otherHeight] = [this.width, this.height, other.width, other.height]
+
+        // Rectangle intersection
+        const xOverlap = (x < otherX + otherWidth) && (x + width > otherX)
+        const yOverlap = (y < otherY + otherHeight) && (y + height > otherY)
+
+        return xOverlap && yOverlap
     }
 
     get x(){
