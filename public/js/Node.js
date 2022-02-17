@@ -55,15 +55,11 @@ class SizedNode extends Node{
     update(time, {minX = 0, minY = 0, maxX = Number.MAX_VALUE, maxY = Number.MAX_VALUE}){
         super.update(time, {minX, minY, maxX, maxY})
 
-        if(this.x <= minX)
-            this.x = minX
-        else if(this.x + this.width >= maxX)
-            this.x = maxX - this.width
+        const [rectangleMinX, rectangleMinY, rectangleMaxX, rectangleMaxY] = [minX, minY, maxX - this.width, maxY - this.height]
 
-        if(this.y <= minY)
-            this.y = minY
-        else if(this.y + this.height >= maxY)
-            this.y = maxY - this.height     
+        this.x = clamp(this.x, rectangleMinX, rectangleMaxX)
+        this.y = clamp(this.y, rectangleMinY, rectangleMaxY)
+
     }
 
     collidesWith(other){
