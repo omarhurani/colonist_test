@@ -20,3 +20,11 @@ function clamp(value, min, max){
     else
         return value
 }
+
+function extractFontSizeFromFont(font){
+    const fontSize = font.match(/\d+px/)
+    const fontSizeWithoutPx = fontSize[0].substring(0, fontSize[0].length - 2)
+    const fontSizeAsNumber = parseInt(fontSizeWithoutPx)
+
+    return fontSizeAsNumber
+}
