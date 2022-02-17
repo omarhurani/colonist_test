@@ -24,13 +24,17 @@ class Node{
     }
 
     set direction(direction){
-        const directionLargerThan360 = direction > Math.PI * 2
-        while(directionLargerThan360)
+        let directionLargerThan360 = direction > Math.PI * 2
+        while(directionLargerThan360){
             direction -= Math.PI * 2 // subtract 360 degress
+            directionLargerThan360 = direction > Math.PI * 2
+        }            
 
-        const directionLessThan0 = direction < 0
-        while(directionLessThan0)
+        let directionLessThan0 = direction < 0
+        while(directionLessThan0){
             direction += Math.PI * 2 // Add 360 degrees
+            directionLessThan0 = direction < 0
+        }            
 
         this._direction = direction
     }
