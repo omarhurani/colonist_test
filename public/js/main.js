@@ -152,7 +152,7 @@ app.onResize = function(){
     
 }
 
-app.resetBall = async function(){
+app.resetBall = async function(wait = true){
     let ball = this.getNode('ball')
     let speed = ball.speed
     ball.speed = 0
