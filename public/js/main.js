@@ -127,6 +127,17 @@ app.initializeScores = function(){
     )
 }
 
+app.initializePlayers = function(){
+    this.initializePaddles()
+
+    this.players = {
+        left : new Player(this.getNode('left'), { up: Keys.W, down: Keys.S }),
+        right : new Player(this.getNode('right'), { up: Keys.UP, down: Keys.DOWN })
+    }
+
+    this.initializeScores()
+}
+
 app.onResize = function(){
     
     let aspectRatio = 2;
