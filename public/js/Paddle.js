@@ -5,33 +5,53 @@ class Paddle extends RectangularNode{
 
     getBallInfoFromBounce(ball){
 
-        if(!this.collidesWith(ball))
+        const ballIsNotCircularNode = !(ball instanceof CircularNode)
+        if(ballIsNotCircularNode)
+            return null
+        
+        const notCollidingWithBall = !this.collidesWith(ball) 
+        if(notCollidingWithBall)
             return null
 
-        const offset = Math.abs(ball.position.y - this.position.y)
+        const yCentersOffset = ball.position.y - this.position.y
 
-        let direction = offset / (this.height/2) * maxAngle * (ball.position.y > this.position.y ? 1 : -1)
-        let speed = ball.speed
+        const offsetToHeightRatio = yCentersOffset / (this.height/2)
+        let bounceAngle = offsetToHeightRatio * maxAngle
+        
+        let newBallSpeed = ball.speed
 
-        if(ball.position.x < this.position.x){
-            direction = -(direction + Math.PI)
-            speed = -speed
+        // This calculation assumes that that the ball is bouncing off the right of the paddle
+        // If the ball is moving bouncing off the left of the paddle,
+        // the speed is reversed and the actual bounce angle is the supplementary of the calculated bounce angle
+
+        const ballIsToLeftOfPaddle = ball.position.x < this.position.x
+        if(ballIsToLeftOfPaddle){
+            const reversedSpeed = -newBallSpeed
+            newBallSpeed = reversedSpeed
+
+            const supplementaryBounceAngle = Math.PI - bounceAngle
+            bounceAngle = supplementaryBounceAngle
         }
-           
-        let x
 
-        // Clamp the ball x position to stay outside the paddle
-        if(ball.position.x > this.position.x)
-            x = this.position.x + this.width / 2 + ball.width / 2
-        else
-            x = this.position.x - this.width / 2 - ball.width / 2
+        const newBallDirection = bounceAngle
+           
+        let newBallX
+
+        if(ballIsToLeftOfPaddle){
+            const ballXPositionToTheLeftOfPaddle = this.x - ball.radius
+            newBallX = ballXPositionToTheLeftOfPaddle
+        }            
+        else{
+            const ballXPositionToTheRightOfPaddle = this.x + this.width + ball.radius
+            newBallX = ballXPositionToTheRightOfPaddle
+        }            
 
 
         return {
-            speed,
-            direction,
+            speed: newBallSpeed,
+            direction: newBallDirection,
             position: {
-                x,
+                x: newBallX,
                 y: ball.position.y
             }
         }
