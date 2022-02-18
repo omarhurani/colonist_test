@@ -192,18 +192,19 @@ app.pause = function(){
 
 app.reset = function() {
     this.pause()
-    this.getNode('ball').position = {
-        x : this.width / 2,
-        y : this.height / 2
-    }
+    this.resetBall(false)
 
-    for(let player in this.players){
-        this.players[player].score = 0
-        this.getNode(`${player}_score`).text = 0
-        const paddle = this.getNode(player)
+    for(const id in this.players){
+        const player = this.players[id]
+        player.score = 0
+        const playerScore = this.getNode(`${id}_score`)
+        playerScore.text = 0
+        const paddle = this.getNode(id)
+        const x = paddle.position.x
+        const yCenter = this.height / 2
         paddle.position = {
-            x : paddle.position.x,
-            y : this.height / 2,
+            x,
+            y : yCenter,
         }
     }
 }
