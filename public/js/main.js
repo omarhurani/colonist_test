@@ -145,7 +145,7 @@ app.onResize = function(){
         const scaledHeight = window.innerWidth / referenceAspectRatio;
         height = scaledHeight;
     }
-    
+
     this.scale = width / this.width
     this.canvas.width = width
     this.canvas.height = height
@@ -157,15 +157,16 @@ app.resetBall = async function(){
     let speed = ball.speed
     ball.speed = 0
 
-    // Wait for 2 seconds
+    // Wait for 1.5 seconds
     await new Promise(resolve => setTimeout(resolve, 1500))
     ball.speed = speed
 
-    ball.position = {
+    const center = {
         x : this.width / 2,
         y : this.height / 2
     }
-    ball.direction = ((Math.random() * maxAngle) - (maxAngle / 2)) + (Math.random() < 0.5 ? 0 : Math.PI)
+    ball.position = center
+    ball.direction = getRandomAngle()
 }
 
 app.togglePause = function(){
