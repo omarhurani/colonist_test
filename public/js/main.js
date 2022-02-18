@@ -4,15 +4,7 @@ app.onInit = function(){
     this.initializeSeparator()
     this.initializePlayers()
     this.initializeKeyListeners()
-    this.nodes.push(
-        new Ball(
-            'ball',
-            {x : this.width / 2, y : this.height / 2},     
-            0.5,
-            0,
-            this.audio.bounce,
-        ),
-    )
+    this.initializeBall()
 
     this.nodes.push(
         new RectangularNode('pauseScreen', {x : this.width / 2, y : this.height / 2}, {width : this.width, height : this.height}, 'rgba(0,0,0,0.5)', 0, 0,),        
@@ -122,6 +114,18 @@ app.initializePlayers = function(){
 app.initializeKeyListeners = function(){
     window.addEventListener('keydown', (event) => this.onKey(true, event));
     window.addEventListener('keyup', (event) => this.onKey(false, event));
+}
+
+app.initializeBall = function(){
+    this.nodes.push(
+        new Ball(
+            'ball',
+            {x : this.width / 2, y : this.height / 2},     
+            0.5,
+            0,
+            this.audio.bounce,
+        )
+    )
 }
 
 app.onResize = function(){
