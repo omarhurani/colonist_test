@@ -113,13 +113,6 @@ app.onResize = function(){
         height = window.innerWidth / aspectRatio;
     }
     
-    // this.context.mozImageSmoothingEnabled = false;
-    // this.context.webkitImageSmoothingEnabled = false;
-    // this.context.msImageSmoothingEnabled = false;
-    // this.context.imageSmoothingEnabled = false;
-
-    // By changing the canvas.style size, the contents of the canvas are scaled to the new size
-    // This will make it such that absolute sizes become relative to the canvas.style size
     this.scale = width / this.width
     this.canvas.width = width
     this.canvas.height = height
