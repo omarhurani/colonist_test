@@ -13,14 +13,11 @@ app.onInit = function(){
         ),
     )
 
-    window.addEventListener('keydown', (event) => this.onKey(true, event));
-    window.addEventListener('keyup', (event) => this.onKey(false, event));
-
     this.nodes.push(
         new RectangularNode('pauseScreen', {x : this.width / 2, y : this.height / 2}, {width : this.width, height : this.height}, 'rgba(0,0,0,0.5)', 0, 0,),        
         new TextNode('pauseText', {x : this.width / 2, y : this.height / 2}, 'PAUSED', '72px Arial', 'white')
     )
-
+    
     this.resetBall()
 
 };
@@ -119,6 +116,11 @@ app.initializePlayers = function(){
     }
 
     this.initializeScores()
+}
+
+app.initializeKeyListeners = function(){
+    window.addEventListener('keydown', (event) => this.onKey(true, event));
+    window.addEventListener('keyup', (event) => this.onKey(false, event));
 }
 
 app.onResize = function(){
