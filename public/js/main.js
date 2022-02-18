@@ -15,14 +15,7 @@ app.onUpdate = function(time){
     if(this.paused)
         return
 
-    for(let node of this.nodes){
-        node.update(time, {
-            minX : 0,
-            minY : 0,
-            maxX : this.width,
-            maxY : this.height
-        });
-    }
+    this.updateNodes(time)
 
     // Ball scoring
     let ball = this.getNode('ball')
@@ -167,6 +160,17 @@ app.initializePauseScreen = function(){
     this.nodes.push(
         new RectangularNode('pauseScreen', center, size, backgroundColor, 0, 0,),        
         new TextNode('pauseText', center, text, font, textColor)
+    )
+}
+
+app.updateNodes = function(time){
+    this.nodes.forEach(node => 
+        node.update(time, {
+            minX : 0,
+            minY : 0,
+            maxX : this.width,
+            maxY : this.height
+        })
     )
 }
 
