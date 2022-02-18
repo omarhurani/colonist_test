@@ -5,11 +5,7 @@ app.onInit = function(){
     this.initializePlayers()
     this.initializeKeyListeners()
     this.initializeBall()
-
-    this.nodes.push(
-        new RectangularNode('pauseScreen', {x : this.width / 2, y : this.height / 2}, {width : this.width, height : this.height}, 'rgba(0,0,0,0.5)', 0, 0,),        
-        new TextNode('pauseText', {x : this.width / 2, y : this.height / 2}, 'PAUSED', '72px Arial', 'white')
-    )
+    this.initializePauseScreen()
     
     this.resetBall()
 
@@ -125,6 +121,13 @@ app.initializeBall = function(){
             0,
             this.audio.bounce,
         )
+    )
+}
+
+app.initializePauseScreen = function(){
+    this.nodes.push(
+        new RectangularNode('pauseScreen', {x : this.width / 2, y : this.height / 2}, {width : this.width, height : this.height}, 'rgba(0,0,0,0.5)', 0, 0,),        
+        new TextNode('pauseText', {x : this.width / 2, y : this.height / 2}, 'PAUSED', '72px Arial', 'white')
     )
 }
 
