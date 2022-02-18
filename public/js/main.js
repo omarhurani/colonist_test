@@ -107,6 +107,18 @@ app.initializeSeparator = function(){
     ))
 }
 
+app.initializePaddles = function(){
+    this.nodes.push(
+        new Paddle(
+            'left', 
+            {x : 50, y : this.height / 2},
+        ),
+        new Paddle(
+            'right',
+            {x : this.width - 50, y : this.height / 2},
+        )
+    )
+}
 app.onResize = function(){
     
     let aspectRatio = 2;
