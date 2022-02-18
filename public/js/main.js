@@ -171,8 +171,9 @@ app.resetBall = async function(){
 
 app.togglePause = function(){
     this.paused = !this.paused
-    this.getNode('pauseScreen').visible = this.paused
-    this.getNode('pauseText').visible = this.paused
+    const [pauseScreen, pauseText] = [this.getNode('pauseScreen'), this.getNode('pauseText')]
+    pauseScreen.visible = this.paused
+    pauseText.visible = this.paused
 }
 
 app.start = function(){
