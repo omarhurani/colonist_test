@@ -150,15 +150,10 @@ app.initializeKeyListeners = function(){
 }
 
 app.initializeBall = function(){
-    this.nodes.push(
-        new Ball(
-            'ball',
-            {x : this.width / 2, y : this.height / 2},     
-            0.5,
-            0,
-            this.audio.bounce,
-        )
-    )
+    const center = { x : this.width / 2, y : this.height / 2 }
+    const [speed, direction] = [0.5, getRandomAngle()]
+    const bounceAudio = this.audio.bounce
+    this.nodes.push(new Ball('ball', center, speed, direction, bounceAudio))
 }
 
 app.initializePauseScreen = function(){
