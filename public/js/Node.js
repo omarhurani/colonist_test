@@ -209,10 +209,14 @@ class CircularNode extends SizedNode{
 
     draw(context, scale = 1){
         context.save()
+
+        const [scaledX, scaledY, scaledRadius] = [this.position.x * scale, this.position.y * scale, this.radius * scale]
+
         context.fillStyle = this.color
         context.beginPath()
-        context.arc(this.position.x*scale, this.position.y*scale, this.radius*scale, 0, Math.PI*2)
+        context.arc(scaledX, scaledY, scaledRadius, 0, Math.PI*2)
         context.fill()
         context.restore()
     }
+
 }
