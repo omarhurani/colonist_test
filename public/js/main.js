@@ -174,6 +174,41 @@ app.updateNodes = function(time){
     )
 }
 
+app.checkBallScoring = function(){
+    const ball = this.getNode('ball')
+    const ballUninitialized = ball.x == null || ball.y == null
+    if(ballUninitialized){
+        return
+    }
+
+    const [ballTouchingLeft, ballTouchingRight] = [ ball.x <= 0, ball.x + ball.width >= this.width ]
+
+    // Right player scores if ball touches left side, and vise versa
+    const scored = {
+        right : ballTouchingLeft,
+        left : ballTouchingRight
+    }    
+    
+    const ballMoving = ball.speed != 0
+    const ballScored = ballTouchingLeft || ballTouchingRight
+    const ballMovingAndScored = ballMoving && ballScored
+
+    if(ballMovingAndScored){
+        for(const side in scored){
+            const playerDidntScore = !scored[side]
+            if(playerDidntScore)
+                continue
+
+            app.score(side)            
+            break
+        }
+        const deathAudio = this.audio.death
+        deathAudio.play()
+
+        this.resetBall()
+    }
+}
+
 app.score = function(side){
     const scoringPlayer = this.players[side]
     let score = scoringPlayer.score
