@@ -1,7 +1,6 @@
-app.onInit = function(){
+app.onInit = function(){    
 
-    this.onResize()
-    window.addEventListener('resize', () => this.onResize())
+    this.initializeSize()
 
     this.nodes.push(        
         new RectangularNode(
@@ -99,6 +98,11 @@ app.onUpdate = function(time){
     }
 
 };
+
+app.initializeSize = function(){
+    this.onResize()
+    window.addEventListener('resize', () => this.onResize())
+}
 
 app.onResize = function(){
     
