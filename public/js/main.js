@@ -174,6 +174,17 @@ app.updateNodes = function(time){
     )
 }
 
+app.score = function(side){
+    const scoringPlayer = this.players[side]
+    let score = scoringPlayer.score
+    if(score == null)
+        score = 0
+    score = score + 1
+    scoringPlayer.score = score
+    const playerScoreNode = this.getNode(`${side}_score`)
+    playerScoreNode.text = scoringPlayer.score    
+}
+
 app.onResize = function(){
     
     const referenceAspectRatio = 2;
