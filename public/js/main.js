@@ -16,32 +16,9 @@ app.onUpdate = function(time){
         return
 
     this.updateNodes(time)
+    this.checkBallScoring()
 
-    // Ball scoring
-    let ball = this.getNode('ball')
-    if(ball.x == null || ball.y == null)
-        return
-
-    let scoredAt = {
-        right : ball.x <= 0,
-        left : ball.x + ball.width >= this.width
-    }    
-    
-
-    if(ball.speed != 0 && (scoredAt.left || scoredAt.right)){
-        for(let side in scoredAt){
-            if(scoredAt[side]){
-                let player = this.players[side]
-                if(player.score == null)
-                    player.score = 0
-                player.score++
-                this.getNode(`${side}_score`).text = player.score
-                this.audio.death.play()
-            }
-        }
-        this.resetBall()
-    }
-
+    const ball = this.getNode('ball')
     let paddles = [this.getNode('left'), this.getNode('right')]
     for(let paddle of paddles){
         let newBallInfo = paddle.getBallInfoFromBounce(ball)
