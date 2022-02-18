@@ -23,24 +23,31 @@ class Player{
     set keys(keys){
 
         for(let key in keys){
-            if(this._keys[key] != null && keys[key] != null)
-                this._keys[key] = keys[key]
+            const keyExistsForPlayer = this._keys[key] != null
+            const keyExistsInKeys = keys[key] != null
+            if(keyExistsForPlayer && keyExistsInKeys){
+                const keyIsPressed = keys[key]
+                this._keys[key] = keyIsPressed
+            }
+                
         }
 
         let [speed, direction] = [0, 0]
-        let [up, down] = [this.keys[this._keyCodeDefenitions.up], this.keys[this._keyCodeDefenitions.down]]
+        const [upKeycode, downKeycode] = [this._keyCodeDefenitions.up, this._keyCodeDefenitions.down]
+        const [upPressed, downPressed] = [this.keys[upKeycode], this.keys[downKeycode]]
         
-        if(up){
-            direction -= Math.PI / 2
+        if(upPressed){
+            direction -= Math.PI / 2 // 180 degrees up
         }
 
-        if(down){
-            direction += Math.PI / 2
+        if(downPressed){
+            direction += Math.PI / 2 // 180 degrees down
         }
 
-        // XOR; if player is only pressing one key
-        if(up ^ down)
+        const onlyOneKeyPressed = upPressed ^ downPressed
+        if(onlyOneKeyPressed){
             speed = Player.paddleSpeed
+        }
 
         this.paddle.speed = speed
         this.paddle.direction = direction
