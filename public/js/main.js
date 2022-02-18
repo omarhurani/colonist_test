@@ -182,7 +182,8 @@ app.start = function(){
 }
 
 app.pause = function(){
-    if(!this.paused)
+    const notPaused = !this.paused
+    if(notPaused)
         this.togglePause()
 }
 
