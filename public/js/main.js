@@ -132,9 +132,15 @@ app.initializeScores = function(){
 app.initializePlayers = function(){
     this.initializePaddles()
 
+    const [leftPaddle, rightPaddle] = [this.getNode('left'), this.getNode('right')]
+    const [leftKeys, rightKeys] = [
+        { up: Keys.W, down: Keys.S },
+        { up: Keys.UP, down: Keys.DOWN }
+    ]
+
     this.players = {
-        left : new Player(this.getNode('left'), { up: Keys.W, down: Keys.S }),
-        right : new Player(this.getNode('right'), { up: Keys.UP, down: Keys.DOWN })
+        left : new Player(leftPaddle, leftKeys),
+        right : new Player(rightPaddle, rightKeys)
     }
 
     this.initializeScores()
