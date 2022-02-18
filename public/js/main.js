@@ -134,7 +134,7 @@ app.initializePauseScreen = function(){
 app.onResize = function(){
     
     const referenceAspectRatio = 2;
-    let width, height = [window.innerWidth, window.innerHeight];
+    let [width, height] = [window.innerWidth, window.innerHeight];
 
     const aspectRatioLargerThanReference = window.innerWidth / window.innerHeight > referenceAspectRatio
 
