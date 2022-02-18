@@ -53,3 +53,41 @@ function circleIntersectsCircle(circle1, circle2){
 
     return circlesIntersecting
 }
+
+function circleIntersectsRectangle(circle, rectangle){
+    let distanceBetweenCentersX = Math.abs(circle.x - rectangle.x)
+    let distanceBetweenCentersY = Math.abs(circle.y - rectangle.y)
+
+    const minIntersectionDistanceX = circle.radius + rectangle.width / 2
+    const minIntersectionDistanceY = circle.radius + rectangle.height / 2
+ 
+    const withinMinIntersectionDistanceX = distanceBetweenCentersX <= minIntersectionDistanceX
+    const withinMinIntersectionDistanceY = distanceBetweenCentersY <= minIntersectionDistanceY
+    const outsideMinIntersectionDistance = !withinMinIntersectionDistanceX || !withinMinIntersectionDistanceY
+
+    if (outsideMinIntersectionDistance)
+        return false;
+
+    // Now circle must be within the minimum intersection distance
+
+    const circleCenterXInsideRectangle = distanceBetweenCentersX <= (rectangle.width/2)
+    const circleCenterYInsideRectangle = distanceBetweenCentersY <= (rectangle.height/2)
+    const circleCenterXOrYInsideRectangle = circleCenterXInsideRectangle || circleCenterYInsideRectangle
+
+    if (circleCenterXOrYInsideRectangle)
+        return true;
+
+    const distanceBetweenCircleCenterAndClosestRectangleCornerX = distanceBetweenCentersX - other.width/2;
+    const distanceBetweenCircleCenterAndClosestRectangleCornerY = distanceBetweenCentersY - other.height/2;
+    
+    const distanceBetweenCircleCenterAndClosestRectangeCornerSquared = (
+        distanceBetweenCircleCenterAndClosestRectangleCornerX *
+        distanceBetweenCircleCenterAndClosestRectangleCornerX
+        ) + (
+        distanceBetweenCircleCenterAndClosestRectangleCornerY *
+        distanceBetweenCircleCenterAndClosestRectangleCornerY)
+    const radiusSquared = radius * radius;
+    const circleIntersectsRectangleCorner = distanceBetweenCircleCenterAndClosestRectangeCornerSquared <= radiusSquared;
+
+    return circleIntersectsRectangleCorner
+}
