@@ -68,12 +68,23 @@ app.initializeSize = function(){
 }
 
 app.initializeSeparator = function(){
-    this.nodes.push(new RectangularNode(
-        'separator',
-        {x : this.width / 2, y : this.height / 2},
-        {width : 2, height : this.height},
-        'rgba(0,0,0,0.25)', 0, 0
-    ))
+    const center = {
+        x : this.width / 2,
+        y : this.height / 2
+    }
+    const size = {
+        width: 2,
+        height: this.height
+    }
+    const transparentBlack = 'rgba(0,0,0,0.25)'
+    this.nodes.push(
+        new RectangularNode(
+            'separator',
+            center,
+            size,
+            transparentBlack, 0, 0
+        )
+    )
 }
 
 app.initializePaddles = function(){
