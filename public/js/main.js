@@ -3,6 +3,7 @@ app.onInit = function(){
     this.initializeSize()
     this.initializeSeparator()
     this.initializePlayers()
+    this.initializeKeyListeners()
     this.nodes.push(
         new Ball(
             'ball',
