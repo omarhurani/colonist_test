@@ -114,11 +114,12 @@ app.initializeScores = function(){
     const font = `${fontSize}px Arial`
     const centerX = this.width / 2
     const margin = 30
-    const leftScoreX = centerX - margin
-    const rightScoreX = centerX + margin
+    const [leftScoreX, rightScoreX] = [centerX - margin, centerX + margin]
     const scoreY = fontSize
-    const leftScorePosition = {x : leftScoreX, y : scoreY}
-    const rightScorePosition = {x : rightScoreX, y : scoreY}
+    const [leftScorePosition, rightScorePosition] = [
+        {x : leftScoreX, y : scoreY},
+        {x : rightScoreX, y : scoreY}
+    ]
     const startingScore = 0
     this.nodes.push(
         new TextNode('left_score', leftScorePosition, startingScore, font, color, 'right'),
