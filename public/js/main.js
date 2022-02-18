@@ -133,15 +133,17 @@ app.initializePauseScreen = function(){
 
 app.onResize = function(){
     
-    let aspectRatio = 2;
-    let width, height
+    const referenceAspectRatio = 2;
+    let width, height = [window.innerWidth, window.innerHeight];
 
-    if(window.innerWidth / window.innerHeight > aspectRatio){
-        width = window.innerHeight * aspectRatio;
-        height = window.innerHeight;
+    const aspectRatioLargerThanReference = window.innerWidth / window.innerHeight > referenceAspectRatio
+
+    if(aspectRatioLargerThanReference){
+        const scaledWidth = window.innerHeight * referenceAspectRatio
+        width = scaledWidth;
     } else{
-        width = window.innerWidth;
-        height = window.innerWidth / aspectRatio;
+        const scaledHeight = window.innerWidth / referenceAspectRatio;
+        height = scaledHeight;
     }
     
     this.scale = width / this.width
