@@ -6,9 +6,13 @@ class Ball extends CircularNode{
 
     _bounce({lowerBoundry = 0, upperBoundry = Number.MAX_VALUE}){        
         
-        if(this.y <= lowerBoundry || (this.y + this.height) >= upperBoundry ){
-            this.direction = -this.direction;
-            this.bounceAudio?.play();
+        const [minY, maxY] = [lowerBoundry, upperBoundry - this.height]
+        const outsideBoundries = this.y < minY || this.y > maxY
+
+        if(outsideBoundries){
+            const reversedDirection = -this.direction
+            this.direction = reversedDirection
+            this.bounceAudio?.play()
         }
         
     }
