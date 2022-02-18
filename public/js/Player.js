@@ -5,7 +5,7 @@ class Player{
     constructor(paddle, {up, down}, score = 0){
         this.id = `${paddle.id}_player`
         this.paddle = paddle
-        this._keyCodes = {
+        this._keyCodeDefenitions = {
             up,
             down
         }
@@ -28,7 +28,7 @@ class Player{
         }
 
         let [speed, direction] = [0, 0]
-        let [up, down] = [this.keys[this._keyCodes.up], this.keys[this._keyCodes.down]]
+        let [up, down] = [this.keys[this._keyCodeDefenitions.up], this.keys[this._keyCodeDefenitions.down]]
         
         if(up){
             direction -= Math.PI / 2
