@@ -112,9 +112,20 @@ app.initializePaddles = function(){
 }
 
 app.initializeScores = function(){
+    const color = 'black'
+    const fontSize = 54
+    const font = `${fontSize}px Arial`
+    const centerX = this.width / 2
+    const margin = 30
+    const leftScoreX = centerX - margin
+    const rightScoreX = centerX + margin
+    const scoreY = fontSize
+    const leftScorePosition = {x : leftScoreX, y : scoreY}
+    const rightScorePosition = {x : rightScoreX, y : scoreY}
+    const startingScore = 0
     this.nodes.push(
-        new TextNode('left_score', {x : this.width / 2 - 30, y : 54}, '0', '54px Arial', 'black', 'right'),
-        new TextNode('right_score', {x : this.width / 2 + 30, y : 54}, '0', '54px Arial', 'black', 'left')
+        new TextNode('left_score', leftScorePosition, startingScore, font, color, 'right'),
+        new TextNode('right_score', rightScorePosition, startingScore, font, color, 'left')
     )
 }
 
