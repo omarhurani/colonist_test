@@ -211,7 +211,13 @@ app.reset = function() {
 
 app.onKey = function(pressed, event){
 
-    if(event.code == Keys.SPACE && pressed && !event.repeat){
+    const key = event.code
+
+    // The event keeps firing while the key is held down
+    // We only want to act on the first event when pausing/resuming
+    const notHoldingKeyDown = !event.repeat
+
+    if(key == Keys.SPACE && pressed && notHoldingKeyDown){
         this.togglePause()
         return
     }
@@ -219,8 +225,10 @@ app.onKey = function(pressed, event){
     if(this.players == null)
         return    
 
-    Object.values(this.players).forEach(player => {
-        player.keys = { [event.code]: pressed }
+    const players = Object.values(this.players)
+
+    players.forEach(player => {
+        player.keys = { [key]: pressed }
     })
 }
 
