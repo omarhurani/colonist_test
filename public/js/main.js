@@ -197,6 +197,23 @@ app.score = function(side){
     playerScoreNode.text = scoringPlayer.score    
 }
 
+app.checkBallCollisionWithPaddles = function(){
+    const ball = this.getNode('ball')
+    let paddles = [this.getNode('left'), this.getNode('right')]
+    for(let paddle of paddles){
+        let newBallInfo = paddle.getBallInfoFromBounce(ball)
+        if(newBallInfo == null)
+            continue
+        const {speed, direction, position} = newBallInfo
+        ball.speed = speed ?? ball.speed
+        ball.direction = direction ?? ball.direction
+        ball.position = position ?? ball.position
+
+        const bounceAudio = this.audio.bounce
+        bounceAudio.play()
+    }
+}
+
 app.onResize = function(){
     
     const referenceAspectRatio = 2;
