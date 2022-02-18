@@ -17,18 +17,7 @@ app.onUpdate = function(time){
 
     this.updateNodes(time)
     this.checkBallScoring()
-
-    const ball = this.getNode('ball')
-    let paddles = [this.getNode('left'), this.getNode('right')]
-    for(let paddle of paddles){
-        let newBallInfo = paddle.getBallInfoFromBounce(ball)
-        if(newBallInfo == null)
-            continue
-        ball.speed = newBallInfo.speed ?? ball.speed
-        ball.direction = newBallInfo.direction ?? ball.direction
-        ball.position = newBallInfo.position ?? ball.position
-        this.audio.bounce.play()
-    }
+    this.checkBallCollisionWithPaddles()
 
 };
 
