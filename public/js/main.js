@@ -91,14 +91,11 @@ app.initializePaddles = function(){
     const distanceFromLeft = 50
     const distanceFromRight = this.width - distanceFromLeft
     const centerY = this.height / 2
-    const leftPosition = {
-        x : distanceFromLeft,
-        y : centerY
-    }
-    const rightPosition = {
-        x : distanceFromRight,
-        y : centerY
-    }
+    const [leftPosition, rightPosition] = [
+        { x : distanceFromLeft , y : centerY },
+        
+        { x : distanceFromRight , y : centerY }
+    ]
     this.nodes.push(
         new Paddle(
             'left', 
