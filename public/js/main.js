@@ -157,9 +157,16 @@ app.initializeBall = function(){
 }
 
 app.initializePauseScreen = function(){
+    const center = { x : this.width / 2, y : this.height / 2 }
+    const size = { width: this.width, height: this.height }
+    const backgroundColor = 'rgba(0,0,0,0.5)'
+
+    const text = 'PAUSED'
+    const font = '72px Arial'
+    const textColor = 'white'
     this.nodes.push(
-        new RectangularNode('pauseScreen', {x : this.width / 2, y : this.height / 2}, {width : this.width, height : this.height}, 'rgba(0,0,0,0.5)', 0, 0,),        
-        new TextNode('pauseText', {x : this.width / 2, y : this.height / 2}, 'PAUSED', '72px Arial', 'white')
+        new RectangularNode('pauseScreen', center, size, backgroundColor, 0, 0,),        
+        new TextNode('pauseText', center, text, font, textColor)
     )
 }
 
