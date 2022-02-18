@@ -202,8 +202,9 @@ class CircularNode extends SizedNode{
     }
 
     set radius(radius){
-        this.width = radius * 2
-        this.height = radius * 2
+        const diameter = radius * 2
+        this.width = diameter
+        this.height = diameter
     }
 
     draw(context, scale = 1){
