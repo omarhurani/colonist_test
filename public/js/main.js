@@ -119,6 +119,14 @@ app.initializePaddles = function(){
         )
     )
 }
+
+app.initializeScores = function(){
+    this.nodes.push(
+        new TextNode('left_score', {x : this.width / 2 - 30, y : 54}, '0', '54px Arial', 'black', 'right'),
+        new TextNode('right_score', {x : this.width / 2 + 30, y : 54}, '0', '54px Arial', 'black', 'left')
+    )
+}
+
 app.onResize = function(){
     
     let aspectRatio = 2;
