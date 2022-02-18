@@ -158,7 +158,10 @@ app.resetBall = async function(wait = true){
     ball.speed = 0
 
     // Wait for 1.5 seconds
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    if(wait){
+        await new Promise(resolve => setTimeout(resolve, 1500))
+    }
+    
     ball.speed = speed
 
     const center = {
