@@ -121,7 +121,10 @@ class RectangularNode extends SizedNode{
     draw(context, scale = 1){
         context.save()
         context.fillStyle = this.color
-        context.fillRect(this.x*scale, this.y*scale, this.width*scale, this.height*scale)
+
+        const [scaledX, scaledY, scaledWidth, scaledHeight] = [this.x * scale, this.y * scale, this.width * scale, this.height * scale]
+
+        context.fillRect(scaledX, scaledY, scaledWidth, scaledHeight)
         context.restore()
     }
 }
