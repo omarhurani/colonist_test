@@ -1,14 +1,8 @@
 app.onInit = function(){    
 
     this.initializeSize()
-
-    this.nodes.push(        
-        new RectangularNode(
-            'seperator',
-            {x : this.width / 2, y : this.height / 2},
-            {width : 2, height : this.height},
-            'rgba(0,0,0,0.25)', 0, 0
-        ),
+    this.initializeSeparator()
+    this.nodes.push(
         new Ball(
             'ball',
             {x : this.width / 2, y : this.height / 2},     
@@ -102,6 +96,15 @@ app.onUpdate = function(time){
 app.initializeSize = function(){
     this.onResize()
     window.addEventListener('resize', () => this.onResize())
+}
+
+app.initializeSeparator = function(){
+    this.nodes.push(new RectangularNode(
+        'separator',
+        {x : this.width / 2, y : this.height / 2},
+        {width : 2, height : this.height},
+        'rgba(0,0,0,0.25)', 0, 0
+    ))
 }
 
 app.onResize = function(){
