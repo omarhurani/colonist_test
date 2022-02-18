@@ -163,28 +163,38 @@ class CircularNode extends SizedNode{
     }
 
     collidesWith(other){
-        if(other instanceof CircularNode){
-            let [x, y] = [this.x, this.y]
-            let [ox, oy] = [other.x, other.y]
-            let [dx, dy] = [ox - x, oy - y]
-            let distance = Math.sqrt(dx * dx + dy * dy)
-            return distance < this.radius + other.radius
-        }
-        if(other instanceof SizedNode){
-            let dx = Math.abs(this.position.x - other.position.x);
-            let dy = Math.abs(this.position.y - other.position.y);
+        const otherIsCircularNode = other instanceof CircularNode
+        if(otherIsCircularNode){
+            const intersecting = circleIntersectsCircle({
+                x: this.position.x,
+                y: this.positiony,
+                radius: this.radius
+            }, {
+                x: other.position.x,
+                y: other.position.y,
+                radius: other.radius
+            })
 
-            if (dx > (other.width/2 + this.radius) || dy > (other.height/2 + this.radius))
-                return false;
-
-            if (dx <= (other.width/2) || dy <= (other.height/2))
-                return true;
-
-            dx = dx - other.width/2;
-            dy = dy - other.height/2;
-            return ((dx * dx + dy * dy) <= (this.radius * this.radius));
+            return intersecting
         }
 
+        const otherIsSizedNode = other instanceof SizedNode
+        if(otherIsSizedNode){
+            const intersecting = circleIntersectsRectangle({
+                x: this.position.x,
+                y: this.position.y,
+                radius: this.radius
+            }, {
+                x: other.position.x,
+                y: other.position.y,
+                width: other.width,
+                height: other.height
+            })
+            
+            return intersecting
+        }
+
+        return super.collidesWith(other)
     }
 
     get radius(){
