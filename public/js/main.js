@@ -2,6 +2,7 @@ app.onInit = function(){
 
     this.initializeSize()
     this.initializeSeparator()
+    this.initializePlayers()
     this.nodes.push(
         new Ball(
             'ball',
@@ -10,20 +11,7 @@ app.onInit = function(){
             0,
             this.audio.bounce,
         ),
-        new Paddle(
-            'left', 
-            {x : 50, y : this.height / 2},
-        ),
-        new Paddle(
-            'right',
-            {x : this.width - 50, y : this.height / 2},
-        ),
     )
-
-    this.players = {
-        left : new Player(this.getNode('left'), { up: Keys.W, down: Keys.S }),
-        right : new Player(this.getNode('right'), { up: Keys.UP, down: Keys.DOWN })
-    }
 
     window.addEventListener('keydown', (event) => this.onKey(true, event));
     window.addEventListener('keyup', (event) => this.onKey(false, event));
@@ -33,11 +21,6 @@ app.onInit = function(){
         new TextNode('pauseText', {x : this.width / 2, y : this.height / 2}, 'PAUSED', '72px Arial', 'white')
     )
 
-    this.nodes.push(
-        new TextNode('left_score', {x : this.width / 2 - 30, y : 54}, '0', '54px Arial', 'black', 'right'),
-        new TextNode('right_score', {x : this.width / 2 + 30, y : 54}, '0', '54px Arial', 'black', 'left')
-    )
-    
     this.resetBall()
 
 };
