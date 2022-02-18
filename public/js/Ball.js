@@ -4,9 +4,9 @@ class Ball extends CircularNode{
         this.bounceAudio = bounceAudio;
     }
 
-    _bounce({minY = 0, maxY = Number.MAX_VALUE}){
-        // If this.y is at the minY or maxY, reverse the Y direction
-        if(this.y <= minY || (this.y + this.height) >= maxY ){
+    _bounce({lowerBoundry = 0, upperBoundry = Number.MAX_VALUE}){        
+        
+        if(this.y <= lowerBoundry || (this.y + this.height) >= upperBoundry ){
             this.direction = -this.direction;
             this.bounceAudio?.play();
         }
@@ -14,7 +14,7 @@ class Ball extends CircularNode{
     }
 
     update(time, {minX = 0, minY = 0, maxX = Number.MAX_VALUE, maxY = Number.MAX_VALUE}){
-        this._bounce({minY, maxY})
+        this._bounce({lowerBoundry: minY, upperBoundry: maxY})
         super.update(time, {minX, minY, maxX, maxY});
     }
 
