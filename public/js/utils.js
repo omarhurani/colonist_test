@@ -91,3 +91,10 @@ function circleIntersectsRectangle(circle, rectangle){
 
     return circleIntersectsRectangleCorner
 }
+
+function getRandomAngle(){
+    const randomAngleValue = (Math.random() * maxAngle) - (maxAngle / 2)
+    const flipped = Math.random() < 0.5 ? -1 : 1
+    const randomAngle = randomAngleValue * flipped
+    return randomAngle
+}
