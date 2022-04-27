@@ -8,21 +8,15 @@ class Node{
     }
 
     update(time, {minX = 0, minY = 0, maxX = Number.MAX_VALUE, maxY = Number.MAX_VALUE}){
-        let [speed, direction] = [this.speed, this.direction]
-        let [sx, sy] = [speed * Math.cos(direction), speed * Math.sin(direction)]
-        let [dx, dy] = [sx * time, sy * time]
-        let [x, y] = [this.position.x + dx, this.position.y + dy]
-        if(x <= minX)
-            x = minX
-        else if(x >= maxX)
-            x = maxX
-        
-        if(y <= minY)
-            y = minY
-        else if(y >= maxY)
-            y = maxY
+        const [speed, direction] = [this.speed, this.direction]
+        const [speedX, speedY] = [speed * Math.cos(direction), speed * Math.sin(direction)]
+        const [distanceX, distanceY] = [speedX * time, speedY * time]
+        let [newX, newY] = [this.position.x + distanceX, this.position.y + distanceY]
 
-        this.position = { x , y }
+        newX = clamp(newX, minX, maxX)
+        newY = clamp(newY, minY, maxY)
+
+        this.position = { x: newX , y: newY }
     }    
 
     get direction(){
@@ -30,10 +24,17 @@ class Node{
     }
 
     set direction(direction){
-        while(direction > Math.PI * 2)
-            direction -= Math.PI * 2
-        while(direction < 0)
-            direction += Math.PI * 2
+        let directionLargerThan360 = direction > Math.PI * 2
+        while(directionLargerThan360){
+            direction -= Math.PI * 2 // subtract 360 degress
+            directionLargerThan360 = direction > Math.PI * 2
+        }            
+
+        let directionLessThan0 = direction < 0
+        while(directionLessThan0){
+            direction += Math.PI * 2 // Add 360 degrees
+            directionLessThan0 = direction < 0
+        }            
 
         this._direction = direction
     }
@@ -41,7 +42,9 @@ class Node{
     draw(context, scale = 1){}
 
     collidesWith(other){
-        return this.position.x == other.position.x && this.position.y == other.position.y
+        const [sameX, sameY] = [this.position.x === other.position.x, this.position.y === other.position.y]
+        const areColliding = sameX && sameY
+        return areColliding
     }
 }
 
@@ -54,23 +57,26 @@ class SizedNode extends Node{
     update(time, {minX = 0, minY = 0, maxX = Number.MAX_VALUE, maxY = Number.MAX_VALUE}){
         super.update(time, {minX, minY, maxX, maxY})
 
-        if(this.x <= minX)
-            this.x = minX
-        else if(this.x + this.width >= maxX)
-            this.x = maxX - this.width
+        const [rectangleMinX, rectangleMinY, rectangleMaxX, rectangleMaxY] = [minX, minY, maxX - this.width, maxY - this.height]
 
-        if(this.y <= minY)
-            this.y = minY
-        else if(this.y + this.height >= maxY)
-            this.y = maxY - this.height     
+        this.x = clamp(this.x, rectangleMinX, rectangleMaxX)
+        this.y = clamp(this.y, rectangleMinY, rectangleMaxY)
+
     }
 
     collidesWith(other){
-        if(!(other instanceof SizedNode))
-            return other.collidesWith(this)
-        let [x, y] = [this.x, this.y]
-        let [ox, oy] = [other.x, other.y]
-        return x < ox + other.width && x + this.width > ox && y < oy + other.height && y + this.height > oy
+        const otherIsNotSizedNode = !(other instanceof SizedNode)
+        if(otherIsNotSizedNode)
+            return other.collidesWith(this)            
+        
+        const [x, y, otherX, otherY] = [this.x, this.y, other.x, other.y]
+        const [width, height, otherWidth, otherHeight] = [this.width, this.height, other.width, other.height]
+
+        // Rectangle intersection
+        const xOverlap = (x < otherX + otherWidth) && (x + width > otherX)
+        const yOverlap = (y < otherY + otherHeight) && (y + height > otherY)
+
+        return xOverlap && yOverlap
     }
 
     get x(){
@@ -105,15 +111,20 @@ class RectangularNode extends SizedNode{
     }
 
     collidesWith(other){
-        if(other instanceof CircularNode)
+        const otherIsCircularNode = other instanceof CircularNode
+        if(otherIsCircularNode)
             return other.collidesWith(this)
+
         return super.collidesWith(other)
     }
 
     draw(context, scale = 1){
         context.save()
         context.fillStyle = this.color
-        context.fillRect(this.x*scale, this.y*scale, this.width*scale, this.height*scale)
+
+        const [scaledX, scaledY, scaledWidth, scaledHeight] = [this.x * scale, this.y * scale, this.width * scale, this.height * scale]
+
+        context.fillRect(scaledX, scaledY, scaledWidth, scaledHeight)
         context.restore()
     }
 }
@@ -132,14 +143,18 @@ class TextNode extends Node{
 
     draw(context, scale = 1){
         context.save()
-        let fontSize = parseInt(this.font.match(/\d+px/)[0].substring(0, this.font.length - 2))
-        let scaledFontSize = Math.floor(fontSize * scale)
 
-        context.font = this.font.replace(/\d+px/, `${scaledFontSize}px`)
+        const fontSize = extractFontSizeFromFont(this.font)
+        const scaledFontSize = Math.floor(fontSize * scale)
+        const newFont = replaceFontSizeInFont(this.font, scaledFontSize)
+
+        const [scaledX, scaledY] = [this.position.x * scale, this.position.y * scale]
+
+        context.font = newFont
         context.fillStyle = this.color
         context.textAlign = this.align
         context.textBaseLine = "middle"
-        context.fillText(this.text, this.position.x*scale, this.position.y*scale)
+        context.fillText(this.text, scaledX, scaledY)
         context.restore()
     }
 }
@@ -151,28 +166,38 @@ class CircularNode extends SizedNode{
     }
 
     collidesWith(other){
-        if(other instanceof CircularNode){
-            let [x, y] = [this.x, this.y]
-            let [ox, oy] = [other.x, other.y]
-            let [dx, dy] = [ox - x, oy - y]
-            let distance = Math.sqrt(dx * dx + dy * dy)
-            return distance < this.radius + other.radius
-        }
-        if(other instanceof SizedNode){
-            let dx = Math.abs(this.position.x - other.position.x);
-            let dy = Math.abs(this.position.y - other.position.y);
+        const otherIsCircularNode = other instanceof CircularNode
+        if(otherIsCircularNode){
+            const intersecting = circleIntersectsCircle({
+                x: this.position.x,
+                y: this.positiony,
+                radius: this.radius
+            }, {
+                x: other.position.x,
+                y: other.position.y,
+                radius: other.radius
+            })
 
-            if (dx > (other.width/2 + this.radius) || dy > (other.height/2 + this.radius))
-                return false;
-
-            if (dx <= (other.width/2) || dy <= (other.height/2))
-                return true;
-
-            dx = dx - other.width/2;
-            dy = dy - other.height/2;
-            return ((dx * dx + dy * dy) <= (this.radius * this.radius));
+            return intersecting
         }
 
+        const otherIsSizedNode = other instanceof SizedNode
+        if(otherIsSizedNode){
+            const intersecting = circleIntersectsRectangle({
+                x: this.position.x,
+                y: this.position.y,
+                radius: this.radius
+            }, {
+                x: other.position.x,
+                y: other.position.y,
+                width: other.width,
+                height: other.height
+            })
+            
+            return intersecting
+        }
+
+        return super.collidesWith(other)
     }
 
     get radius(){
@@ -180,16 +205,21 @@ class CircularNode extends SizedNode{
     }
 
     set radius(radius){
-        this.width = radius * 2
-        this.height = radius * 2
+        const diameter = radius * 2
+        this.width = diameter
+        this.height = diameter
     }
 
     draw(context, scale = 1){
         context.save()
+
+        const [scaledX, scaledY, scaledRadius] = [this.position.x * scale, this.position.y * scale, this.radius * scale]
+
         context.fillStyle = this.color
         context.beginPath()
-        context.arc(this.position.x*scale, this.position.y*scale, this.radius*scale, 0, Math.PI*2)
+        context.arc(scaledX, scaledY, scaledRadius, 0, Math.PI*2)
         context.fill()
         context.restore()
     }
+
 }
