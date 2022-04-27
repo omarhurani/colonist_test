@@ -29,7 +29,7 @@ var app = {
 		window.requestAnimationFrame(this.render.bind(this));
 	},
 	clear  : function(){
-		this.context.clearRect(0, 0, this.width, this.height);
+		this.context.clearRect(0, 0, this.width * this.scale, this.height * this.scale);
 	},
 	update : function(){
 	    var dt = Date.now() - this.lastUpdate;
@@ -38,9 +38,10 @@ var app = {
 
 		for(var index in this.nodes){
 			var node = this.nodes[index];
-
-			this.context.fillStyle = node.color;
-			this.context.fillRect(node.x, node.y, node.width, node.height);
+			if(node.visible)
+				node.draw(this.context, this.scale)
+			// this.context.fillStyle = node.color;
+			// this.context.fillRect(node.x, node.y, node.width, node.height);
 		}
 
 		this.lastUpdate = Date.now();
